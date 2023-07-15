@@ -7,7 +7,6 @@ namespace ITSTDIO_UPDATE_.Models.ViewModels
 {
     public class NewBrandViewModel
     {
-       
         public string Id { get; set; }
         public string Name { get; set; }
     }
