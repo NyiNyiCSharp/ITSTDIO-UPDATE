@@ -1,0 +1,72 @@
+﻿@model PurchaseViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+
+    <style>
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+
+        fieldset {
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+
+        legend {
+            border: none;
+            padding: 0;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <fieldset>
+            <legend>Purchase Update</legend>
+            <form action="/Purchase/Update" method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">ItemName</label>
+                    <select id="AccessoriesTypeNameInput" name="ItemId" class="form-control">
+                        <option value="@Model.ItemId">@Model.ItemName</option>
+                        @foreach (var c in Model.ItemViewModels)
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Quantity</label>
+                    <input type="text" hidden value="@Model.Id" name="Id" />
+                    <input type="number" class="form-control" value="@Model.Quantity" name="Quantity" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">BuyPrice</label>
+                    <input type="number" class="form-control" value="@Model.BuyPrice"  name="BuyPrice" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">SalePrice</label>
+                    <input type="number" class="form-control" value="@Model.SalePrice" name="SalePrice" required>
+                </div>
+
+                <div class="mb-3">
+                    <input class="btn btn-outline-success" type="submit" value="Save" required>
+                    <input class="btn btn-outline-danger" type="reset" value="Cancel" required>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+
+</body>
+</html>

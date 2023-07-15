@@ -1,0 +1,81 @@
+﻿@model IList<RamViewModel>
+
+<head>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+</head>
+
+@{
+    ViewData["Title"] = "Ram List";
+}
+
+@if (TempData["CreateMessageSuccess"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["CreateMessageSuccess"]
+    </div>
+}
+@if (TempData["CreateMessageFail"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["CreateMessageFail"]
+    </div>
+}
+@if (TempData["EditMessageSuccess"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["EditMessageSuccess"]
+    </div>
+}
+@if (TempData["EditMessageFail"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["EditMessageFail"]
+    </div>
+}
+
+<h1>Ram List</h1>
+
+<table id="BatchTable" class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var f in Model)
+        {
+            <tr>
+                <td>@f.Name</td>
+                <td>
+                    <a href="/Ram/Update?Id=@f.Id" class="btn btn-warning" role="button">Edit</a>
+                    <a href="/Ram/Delete?Id=@f.Id" onclick="return confirm('Please confirm')" class="btn btn-danger" role="button">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#BatchTable').DataTable({
+                "paging": true,
+                "ordering": true,
+                "searching": true,
+                "lengthChange": true,
+                "info": true,
+                "autoWidth": false,
+                "language": {
+                    "paginate": {
+                        "previous": "<",
+                        "next": ">"
+                    }
+                }
+            });
+        });
+    </script>
+}

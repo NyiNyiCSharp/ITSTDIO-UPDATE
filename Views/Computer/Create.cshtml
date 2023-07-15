@@ -1,0 +1,332 @@
+﻿
+@model ComputerViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        .Other-list-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .Other-list-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .Other-list-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            width: 400px;
+            max-width: 90%;
+            overflow: auto;
+        }
+
+        .button-area {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10%;
+        }
+
+        .custom-button {
+            flex-basis: 20%;
+        }
+
+        .button-area::before,
+        .button-area::after {
+            content: "";
+            flex-basis: 50px; /* Adjust the desired spacing here */
+        }
+    </style>
+
+    <style>
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+
+        fieldset {
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+
+        legend {
+            border: none;
+            padding: 0;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <fieldset>
+            <legend>Computer Create</legend>
+            <form action="/Computer/Create" method="post" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label class="form-label">Photo</label>
+                    <input type="file" class="form-control" name="Photo" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input id="nameInput" type="text" class="form-control" placeholder="Enter Computer Name" name="Name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Computer type</label>
+                    <select  id="ComputerTypeInput" name="ComputerAmyoAsarId" class="form-control">
+                        @foreach (var c in Model.ComputerAmyoAsarViewModel)
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Brand</label>
+                    <select id="BrandNameInput" name="BrandId" class="form-control">
+                        @foreach (var f in Model.BrandViewModel)
+                        {
+                            <option value="@f.Id">@f.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Cpu</label>
+                    <select  id="cpuInput"  name="CpuId" class="form-control">
+                        @foreach (var f in Model.CpuViewModel)
+                        {
+                            <option value="@f.Id">@f.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Ram</label>
+                    <select  id="ramInput"  name="RamId" class="form-control">
+                        @foreach (var f in Model.RamViewModel)
+                        {
+                            <option value="@f.Id">@f.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">storageSize</label>
+                    <input  id="storageSizeInput"  type="number" class="form-control" placeholder="storageSize" name="storageSize" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">isSSD</label>
+                    <input type="checkbox" class="form-control" name="isSSD" value="yes" id="chkCheap" />
+                </div>
+
+               
+                <div class="mb-3" id="detailContainer" style="display: none;">
+                    <label class="form-label">Detail</label>
+                    <textarea id="detailInput" class="form-control" name="Detail" rows="4"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-secondary" type="button" onclick="showDetail()">Add more Detail</button>
+                </div>
+                <div class="mb-3">
+                    <input class="btn btn-outline-success" type="submit" value="Save" required>
+                    <input class="btn btn-outline-danger" type="reset" value="Cancel" required>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+    <div class="button-area">
+        <button class="btn btn-outline-primary custom-button" onclick="showBrandList()">Brand list</button>
+        <button class="btn btn-outline-primary custom-button" onclick="showCpuList()">Cpu list</button>
+        <button class="btn btn-outline-primary custom-button" onclick="showRamList()">Ram list</button>
+        <button class="btn btn-outline-primary custom-button" onclick="showComputerTypeList()">Computer Type list</button>
+    </div>
+
+    <div id="OtherListContainer" class="Other-list-container">
+        <div class="Other-list-overlay" id="OtherListOverlay"></div>
+        <div class="Other-list-content" id="OtherListContent"></div>
+    </div>
+
+    @section Scripts {
+        <script>
+            function showDetail() {
+                var detailContainer = document.getElementById("detailContainer");
+                var nameInput = document.getElementById("nameInput");
+                var BrandNameInput = document.getElementById("BrandNameInput");
+                var ComputerTypeInput = document.getElementById("ComputerTypeInput");
+                var cpuInput = document.getElementById("cpuInput");
+                var ramInput = document.getElementById("ramInput");
+                var storageSizeInput = document.getElementById("storageSizeInput");
+                var detailInput = document.getElementById("detailInput");
+
+                detailContainer.style.display = "block";
+                var nameValue = nameInput.value.trim();
+                var storageSizeInputValue = storageSizeInput.value.trim();
+                var BrandNameValue = BrandNameInput.options[BrandNameInput.selectedIndex].text; // Retrieve the selected brand name
+                var ComputerTypeInputValue = ComputerTypeInput.options[ComputerTypeInput.selectedIndex].text;
+                var cpuInputValue = cpuInput.options[cpuInput.selectedIndex].text;
+                var ramInputValue = ramInput.options[ramInput.selectedIndex].text;
+                var detailValue = "";
+                detailValue += "IT STUDIO" + "\n";
+                if (nameValue !== "") {
+                    detailValue += "Name   : " + nameValue + "\n";
+                }
+
+                if (BrandNameValue !== "") {
+                    detailValue += "Brand  : " + BrandNameValue + "\n";
+                }
+
+                if (ComputerTypeInputValue !== "") {
+                    detailValue += "Type   : " + ComputerTypeInputValue + "\n";
+                }
+                if (cpuInputValue !== "") {
+                    detailValue += "Cpu   : " + cpuInputValue + "\n";
+                }
+                if (ramInputValue !== "") {
+                    detailValue += "Ram   : " + ramInputValue + "\n";
+                }
+                detailValue += "Note   : ";
+
+                detailInput.value = detailValue;
+
+                // Set focus on the detail input box after showing it
+                detailInput.focus();
+                detailInput.setSelectionRange(0, 0); // Set the cursor at the beginning of the text
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            function showBrandList() {
+                $.ajax({
+                    url: '/Home/BrandList',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#OtherListContent').html(data);
+                        $('#OtherListContainer').show();
+                    },
+                    error: function () {
+                        // Handle error if any
+                    }
+                });
+            }
+
+           
+
+            function showCpuList() {
+                $.ajax({
+                    url: '/Home/CpuList',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#OtherListContent').html(data);
+                        $('#OtherListContainer').show();
+                    },
+                    error: function () {
+                        // Handle error if any
+                    }
+                });
+            }
+
+           
+
+            function showRamList() {
+                $.ajax({
+                    url: '/Home/RamList',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#OtherListContent').html(data);
+                        $('#OtherListContainer').show();
+                    },
+                    error: function () {
+                        // Handle error if any
+                    }
+                });
+            }
+
+           
+
+            function showComputerTypeList() {
+                $.ajax({
+                    url: '/Home/ComputerAmyoAsarList',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#OtherListContent').html(data);
+                        $('#OtherListContainer').show();
+                    },
+                    error: function () {
+                        // Handle error if any
+                    }
+                });
+            }
+
+            function hideOtherList() {
+                $('#OtherListContainer').hide();
+            }
+
+            function showComputerTypeCreate() {
+                $.ajax({
+                    url: '/Home/ComputerAmyoAsarCreate',
+                    type: 'GET',
+                    success: function (data) {
+                        
+                        $('#OtherListContent').html(data);
+                        $('#OtherListContainer').show();
+                    },
+                    error: function () {
+                        // Handle error if any
+                    }
+                });
+            }
+
+        </script>
+    }
+</body>
+</html>

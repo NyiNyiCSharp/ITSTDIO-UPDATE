@@ -1,0 +1,58 @@
+﻿
+@model IList<Microsoft.AspNetCore.Identity.IdentityUser>
+@*<head>
+        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+    </head>*@
+@{
+    ViewData["Title"] = "Application User List";
+  
+}
+<h1>ApplicationUser list</h1>
+
+<table id="BatchTable" class="table table-dark table-hover">
+
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Admin</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+   
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+
+
+
+
+
+
+                    <td>@user.Email</td>
+                    <td>
+
+                        <i class="fas fa-check" style="color: green;"></i>
+                    </td>
+                    <td><a href="/Home/ItemRemoveFromCart?Id=@user.Id" class="btn btn-warning" role="button">Add Admin</a></td>
+
+                </tr>
+            }
+            </tbody>
+
+        </table>
+
+@section Scripts{
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+}
+
+<script>
+    $(document).ready(function () {
+        $('#BatchTable').dataTable({
+        });
+    });
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
