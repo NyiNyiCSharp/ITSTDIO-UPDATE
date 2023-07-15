@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ITSTDIO_UPDATE_.Models.ViewModels
 {
-    public class BrandViewModelNew
+    public class NewBrandViewModel
     {
        
         public string Id { get; set; }
