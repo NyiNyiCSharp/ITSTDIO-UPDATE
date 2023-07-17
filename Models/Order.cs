@@ -17,8 +17,7 @@ namespace ITSTDIO_UPDATE_.Models
         public string Quantity { get; set; }
         public string Address { get; set; }
         public int PhoneNumber { get; set; }
-        public int TotalPrice { get; set; }
-        
+        public int TotalPrice { get; set; }       
         public string Price { get; set; }
        
     }

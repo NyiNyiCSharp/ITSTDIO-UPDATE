@@ -1,4 +1,5 @@
-﻿using ITSTDIO_UPDATE_.Models;
+﻿using AspNetCore.Reporting;
+using ITSTDIO_UPDATE_.Models;
 using ITSTDIO_UPDATE_.Models.DAO;
 using ITSTDIO_UPDATE_.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
@@ -700,9 +701,37 @@ namespace ITSTDIO_UPDATE_.Controllers
             applicationDbContext.SaveChanges();
             return RedirectToAction("ProductList");
         }
+        public IActionResult OrderDetailFromDateToDate(DateTime FromDate, DateTime ToDate)
+        {
+            var rdlcFilePath = $"{webHostEnvironment.WebRootPath}\\Reports\\Report1.rdlc";
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("ReportParameter1", $"From Date:{FromDate}");
+            parameters.Add("ReportParameter2", $"To Date  :{ToDate}");
+            LocalReport localReport = new LocalReport(rdlcFilePath);
+            IList<OrderViewModel> viewModels = applicationDbContext.orders.Where(x =>
+            x.CreateDate >= FromDate && x.CreateDate  <= ToDate)
+                .Select(c => new OrderViewModel
+                {
+                    Id = c.Id,
+                    UserId = c.UserId,
+                    UserName = c.UserName,
+                    ItemName = c.ItemName,
+                    Quantity = c.Quantity,
+                    PhotoPath = c.PhotoPath,
+                    Address = c.Address,
+                    PhoneNumber = c.PhoneNumber,
+                    Price = c.Price,
+                    TotalPrice = c.TotalPrice,
+                    Date = c.CreateDate
+                }).ToList();
+            localReport.AddDataSource("DataSet1", viewModels);
+            var result = localReport.Execute(RenderType.Pdf, 1, parameters, null);
+            return File(result.MainStream, "application/pdf");
+        }
+        public IActionResult OrderDetailCheck()
+        {
+            return View();
+        }
         
-
-
-
     }
 }

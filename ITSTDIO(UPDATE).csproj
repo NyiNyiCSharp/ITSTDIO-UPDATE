@@ -57,9 +57,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
     <Folder Include="Views\Report\" />
-    <Folder Include="wwwroot\Reports\" />
     <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ITUReport\ITUReport.csproj" />
   </ItemGroup>
 
 </Project>

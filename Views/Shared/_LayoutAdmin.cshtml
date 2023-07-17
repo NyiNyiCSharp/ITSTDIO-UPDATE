@@ -338,6 +338,23 @@
                             </ul>
                         </li>
                         <!-- User -->
+                        <li class="nav-item menu-close">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Report
+                                    <i class="right fas fa-angle-down"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/Home/OrderDetailCheck" class="nav-link">
+                                        <i class=""></i>
+                                        <p>Order Check By Date</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <!-- Logout -->
                         <li class="nav-item menu-open">
                             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
