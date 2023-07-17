@@ -1,0 +1,98 @@
+﻿
+@model IList<AccessoriesViewModel>;
+<head>
+        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+    </head>
+@{
+    ViewData["Title"] = "Accessories list";
+}
+@if (TempData["CreateMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["CreateMessage"]
+    </div>
+}
+
+@if (TempData["EditMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["EditMessage"]
+    </div>
+}
+
+<h1>Accessories list</h1>
+
+<table id="BatchTable" class="table table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Photo</th>
+            <th>name</th>
+            <th>Type</th>
+            <th>brand</th>
+            <th>detail</th>
+            <th>action</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var f in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(f.PhotoPath))
+                    {
+                        <img class="img-fluid" src="@Url.Content(f.PhotoPath)" alt="Computer Photo" />
+                    }
+                    else
+                    {
+                        <span>No Photo</span>
+                    }
+                </td>
+                <td>@f.Name</td>
+                <td>@f.AccessoriesTypeName</td>
+                <td>@f.BrandName</td>
+                <td>
+                    <pre class="formatted-data">
+     @f.Detail
+  </pre>
+
+
+                </td>
+                <td>
+                    <a href="/Accessories/Update?Id=@f.Id"
+                       class="btn btn-warning" role="button">Edit</a>
+                    <a href="/Accessories/Delete?Id=@f.Id"
+                       onclick="return confirm('Please Confirm')"
+                       class="btn btn-danger" role="button">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#BatchTable').DataTable({
+                "paging": true,
+                "ordering": true,
+                "searching": true,
+                "lengthChange": true,
+                "info": true,
+                "autoWidth": false,
+                "language": {
+                    "paginate": {
+                        "previous": "<",
+                        "next": ">"
+                    }
+                }
+            });
+        });
+    </script>}
+

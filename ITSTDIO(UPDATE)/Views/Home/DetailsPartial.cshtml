@@ -1,0 +1,32 @@
+﻿@model ItemViewModel
+<!-- Render the detailed view content -->
+<style>
+    .formatted-data {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 0;
+        white-space: pre-wrap;
+    }
+    
+</style>
+
+<div>
+
+    <pre class="formatted-data">
+    @Model.Detail
+  </pre>
+    <!-- Add the buttons -->
+    <div>
+        @if (Model.Quantity == 0)
+        {
+            <span class="btn btn-disabled">Add to cart</span>
+            <span class="btn btn-disabled">Order</span>
+
+        }
+        else
+        {
+            <a class="btn btn-primary" href="~/Home/AddToCart?Id=@Model.Id">Add to cart</a>
+            <button type="button" class="btn btn-warning btn-sm" role="button" onclick="showOrderForm('@Model.Id')">Order</button>
+        }
+    </div>
+</div>

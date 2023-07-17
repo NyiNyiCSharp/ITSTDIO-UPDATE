@@ -1,0 +1,50 @@
+﻿@model CpuViewModel
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+
+    <style>
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+
+        fieldset {
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+
+        legend {
+            border: none;
+            padding: 0;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <fieldset>
+            <legend>Cpu Update</legend>
+            <form action="/Cpu/Update" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" hidden value="@Model.Id" name="Id" />
+                    <input type="text" class="form-control" value="@Model.Name" name="Name" required>
+                </div>
+                <div class="mb-3">
+                    <input class="btn btn-outline-success" type="submit" value="Save" required>
+                    <input class="btn btn-outline-danger" type="reset" value="Cancel" required>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+
+</body>
+</html>

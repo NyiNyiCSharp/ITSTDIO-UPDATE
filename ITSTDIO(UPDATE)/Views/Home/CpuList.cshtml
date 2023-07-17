@@ -1,0 +1,28 @@
+﻿@model List<CpuViewModel>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+
+            <th>Name</th>
+            <th>Action</th>
+            <!-- Add other columns if needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model)
+        {
+            <tr>
+
+                <td>@data.Name</td>
+                <td>
+                    <a href="/Cpu/Update?Id=@data.Id" class="btn btn-warning" role="button">Edit</a>
+                    <a href="/Cpu/Delete?Id=@data.Id" onclick="return confirm('Please confirm')" class="btn btn-danger" role="button">Delete</a>
+                </td>
+                <!-- Add other columns if needed -->
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button class="btn btn-outline-secondary" onclick="hideOtherList()">Close</button>
